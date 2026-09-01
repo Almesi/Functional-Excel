@@ -1,0 +1,22 @@
+Number PercentOf(Number Value, Number Total)
+{
+    =LAMBDA(Value,Total, Value/Total)
+}
+
+
+Number PercentChange(Number Old, Number New)
+{
+    =LAMBDA(Old,New, (New-Old)/Old)
+}
+
+
+Number IncreaseBy(Number Input, Number Percent)
+{
+    =LAMBDA(x,p, x*(1+p))
+}
+
+
+Number DecreaseBy(Number Input, Number Percent)
+{
+    =LAMBDA(x,p, x*(1-p))
+}

@@ -1,0 +1,28 @@
+Func Any(Func Predicate, Array_Anything Array)
+{
+    =LAMBDA(Predicate,Array,
+        OR(
+            MAP(Array,Predicate)
+        )
+    )
+}
+
+Func All(Func Predicate, Array_Anything Array)
+{
+    =LAMBDA(Predicate,Array,
+        AND(
+            MAP(Array,Predicate)
+        )
+    )
+}
+
+Func Find(Func Predicate, Array_Anything Array)
+{
+    =LAMBDA(Predicate,Array,
+        XMATCH(
+            TRUE,
+            MAP(Array,Predicate),
+            0
+        )
+    )
+}

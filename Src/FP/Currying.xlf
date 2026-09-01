@@ -1,0 +1,123 @@
+Func Curry(Func Function, Array_Anything Args)
+{
+    =LAMBDA(Function,A,B,C,D,E,F,G,H,I,
+        SWITCH(
+            TRUE,
+            ISOMITTED(A), Function,
+            ISOMITTED(B), Curry2(Function,A),
+            ISOMITTED(C), Curry3(Function,A,B),
+            ISOMITTED(D), Curry4(Function,A,B,C),
+            ISOMITTED(E), Curry5(Function,A,B,C,D),
+            ISOMITTED(F), Curry6(Function,A,B,C,D,E),
+            ISOMITTED(G), Curry7(Function,A,B,C,D,E,F),
+            ISOMITTED(H), Curry8(Function,A,B,C,D,E,F,G),
+            ISOMITTED(I), Curry9(Function,A,B,C,D,E,F,G,H),
+            Function(A,B,C,D,E,F,G,H,I)
+        )
+    )
+}
+
+Func Curry2(Func Function, Anything A)
+{
+    =LAMBDA(Function,A,
+        LAMBDA(B,
+            Function(A,B)
+        )
+    )
+}
+
+Func Curry3(Func Function, Anything A, Anything B)
+{
+    =LAMBDA(Function,A,B,
+        Curry2(
+            LAMBDA(B,C, Function(A,B,C)),
+            B
+        )
+    )
+}
+
+Func Curry4(Func Function, Anything A, Anything B, Anything C)
+{
+    =LAMBDA(Function,A,B,C,
+        Curry3(
+            LAMBDA(B,C,D, Function(A,B,C,D)),
+            B,
+            C
+        )
+    )
+}
+
+
+Func Curry5(Func Function, Anything A, Anything B, Anything C, Anything D)
+{
+    =LAMBDA(Function,A,B,C,D,
+        Curry4(
+            LAMBDA(B,C,D,E, Function(A,B,C,D,E)),
+            B,
+            C,
+            D
+        )
+    )
+}
+
+
+Func Curry6(Func Function, Anything A, Anything B, Anything C, Anything D, Anything E)
+{
+    =LAMBDA(Function,A,B,C,D,E,
+        Curry5(
+            LAMBDA(B,C,D,E,F, Function(A,B,C,D,E,F)),
+            B,
+            C,
+            D,
+            E
+        )
+    )
+}
+
+
+Func Curry7(Func Function, Anything A, Anything B, Anything C, Anything D, Anything E, Anything F)
+{
+    =LAMBDA(Function,A,B,C,D,E,F,
+        Curry6(
+            LAMBDA(B,C,D,E,F,G, Function(A,B,C,D,E,F,G)),
+            B,
+            C,
+            D,
+            E,
+            F
+        )
+    )
+}
+
+
+Func Curry8(Func Function, Anything A, Anything B, Anything C, Anything D, Anything E, Anything F, Anything G)
+{
+    =LAMBDA(Function,A,B,C,D,E,F,G,
+        Curry7(
+            LAMBDA(B,C,D,E,F,G,H, Function(A,B,C,D,E,F,G,H)),
+            B,
+            C,
+            D,
+            E,
+            F,
+            G
+        )
+    )
+}
+
+
+Func Curry9(Func Function, Anything A, Anything B, Anything C, Anything D, Anything E, Anything F, Anything G, Anything H)
+{
+    =LAMBDA(Function,A,B,C,D,E,F,G,H,
+        Curry8(
+            LAMBDA(B,C,D,E,F,G,H,I, Function(A,B,C,D,E,F,G,H,I)),
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        )
+    )
+}

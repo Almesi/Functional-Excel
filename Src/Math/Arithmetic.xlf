@@ -1,0 +1,64 @@
+Number Add(Number A, Number B)
+{
+    =LAMBDA(A,B, A+B)
+}
+
+
+Number Subtract(Number A, Number B)
+{
+    =LAMBDA(A,B, A-B)
+}
+
+
+Number Multiply(Number A, Number B)
+{
+    =LAMBDA(A,B, A*B)
+}
+
+
+Number Divide(Number A, Number B)
+{
+    =LAMBDA(A,B, A/B)
+}
+
+
+Number Mod(Number A, Number B)
+{
+    =LAMBDA(A,B, MOD(A,B))
+}
+
+
+Number Double(Number Input)
+{
+    =LAMBDA(x, x*2)
+}
+
+
+Number Half(Number Input)
+{
+    =LAMBDA(x, x/2)
+}
+
+
+Number Negate(Number Input)
+{
+    =LAMBDA(x, -x)
+}
+
+
+Number Reciprocal(Number Input)
+{
+    =LAMBDA(x, 1/x)
+}
+
+
+Number Absolute(Number Input)
+{
+    =LAMBDA(x, ABS(x))
+}
+
+
+Number Sign(Number Input)
+{
+    =LAMBDA(x, SIGN(x))
+}

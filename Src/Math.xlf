@@ -1,8 +1,0 @@
-Number Double(Number Input)
-{
-    =LAMBDA(x, x*2)
-}
-Number Power(Number Input)
-{
-    =LAMBDA(x, x^2)
-}

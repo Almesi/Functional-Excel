@@ -1,0 +1,82 @@
+Number Sin(Number Input)
+{
+    =LAMBDA(x, SIN(x))
+}
+
+
+Number Cos(Number Input)
+{
+    =LAMBDA(x, COS(x))
+}
+
+
+Number Tan(Number Input)
+{
+    =LAMBDA(x, TAN(x))
+}
+
+
+Number ASin(Number Input)
+{
+    =LAMBDA(x, ASIN(x))
+}
+
+
+Number ACos(Number Input)
+{
+    =LAMBDA(x, ACOS(x))
+}
+
+
+Number ATan(Number Input)
+{
+    =LAMBDA(x, ATAN(x))
+}
+
+
+Number Sinh(Number Input)
+{
+    =LAMBDA(x, SINH(x))
+}
+
+
+Number Cosh(Number Input)
+{
+    =LAMBDA(x, COSH(x))
+}
+
+
+Number Tanh(Number Input)
+{
+    =LAMBDA(x, TANH(x))
+}
+
+
+Number ASinh(Number Input)
+{
+    =LAMBDA(x, ASINH(x))
+}
+
+
+Number ACosh(Number Input)
+{
+    =LAMBDA(x, ACOSH(x))
+}
+
+
+Number ATanh(Number Input)
+{
+    =LAMBDA(x, ATANH(x))
+}
+
+
+Number Degrees(Number Radians)
+{
+    =LAMBDA(x, DEGREES(x))
+}
+
+
+Number Radians(Number Degrees)
+{
+    =LAMBDA(x, RADIANS(x))
+}

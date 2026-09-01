@@ -37,7 +37,7 @@ End Sub
 
 
 Private Function IIncludeFormat_Include(ByVal Includer As std_Include, ByVal Source As std_IncludeSource) As VBIDE.VBComponent
-    Set IIncludeFormat_Include = Nothing
+    Set IIncludeFormat_Include = Includer.Destination.VBComponents("std_IncludeFormatXLF")
     Call HandleFunctions(IIncludeFormat_Code(Source))
 End Function
 
@@ -73,13 +73,19 @@ Private Sub HandleFunctions(ByVal Source As String)
 End Sub
 
 Private Function SeperateFunctions(ByVal Source As String) As String()
-    Dim Lines()       As String : Lines = Split(Source, vbCrLf)
-    Dim Size          As Long   : Size  = Ubound(Lines)
-    Dim MergedSize    As Long   : MergedSize = -1
-    Dim MergedLines() As String
+    Dim Lines()        As String : Lines = Split(Source, vbCrLf)
+    Dim Size           As Long   : Size  = Ubound(Lines)
+    Dim MergedSize     As Long   : MergedSize = -1
+    Dim MergedLines()  As String
+
+    Dim CommentPattern As String : CommentPattern = "^\'$"
+    Dim EmptyPattern   As String : EmptyPattern   = ""
 
     Dim Index As Long
     Do While Index =< Size
+        Index = SkipIgnorableLines(Lines, Index)
+        If Index > Size Then Exit Do
+
         Dim CurrentSize As Long
         CurrentSize = GetLastFunctionLine(Lines, Index)
 
@@ -109,15 +115,20 @@ Private Sub HandleFunction(ByVal FuncString As String)
 End Sub
 
 Private Sub AddNamedFunction(ByVal Name As String, ByVal Body As String)
+    On Error GoTo Error
     Call WB.Names.Add(Name, Body)
+    Exit Sub
+    
+    Error:
+    Debug.Print "Couldnt create:"; Body
 End Sub
 
 
 Private Function GetLastFunctionLine(ByRef Arr() As String, ByVal Start As Long) As Long
-    Dim HeadPattern As String : HeadPattern = "^\s*([A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+([A-Za-z_]\w*)\s*\([^)]*\)\s*$"
-    Dim OpenPattern As String : OpenPattern = "^\s*\{\s*$"
-    Dim ClosPattern As String : ClosPattern = "^\s*\}\s*$"
-    Dim Size        As Long   : Size        = Ubound(Arr)
+    Dim HeadPattern    As String : HeadPattern    = "^\s*([A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*)\s+([A-Za-z_]\w*)\s*\([^)]*\)\s*$"
+    Dim OpenPattern    As String : OpenPattern    = "^\s*\{\s*$"
+    Dim ClosePattern   As String : ClosePattern   = "^\s*\}\s*$"
+    Dim Size           As Long   : Size           = Ubound(Arr)
 
     If Start + 1 > Size Then
         Err.Raise vbObjectError + 1000, _
@@ -129,7 +140,7 @@ Private Function GetLastFunctionLine(ByRef Arr() As String, ByVal Start As Long)
     If Match(HeadPattern, Arr(Start)) And Match(OpenPattern, Arr(Start + 1)) Then
         Dim i As Long
         For i = Start + 2 To Size
-            If Match(ClosPattern, Arr(i)) Then
+            If Match(ClosePattern, Arr(i)) Then
                 GetLastFunctionLine = i
                 Exit Function
             End If
@@ -150,4 +161,18 @@ Private Function Match(ByVal Pattern As String, ByVal Inputt As String) As Boole
         .IgnoreCase = True
     End With
     Match = Regex.Test(Inputt)
+End Function
+
+Private Function SkipIgnorableLines(ByRef Arr() As String, ByVal Start As Long) As Long
+    Dim Size           As Long   : Size           = UBound(Arr)
+    Dim EmptyPattern   As String : EmptyPattern   = "^\s*$"
+    Dim CommentPattern As String : CommentPattern = "^\s*'.*$"
+    Dim Index          As Long   : Index          = Start
+    Do While Index <= Size
+        If Not Match(EmptyPattern, Arr(Index)) And Not Match(CommentPattern, Arr(Index)) Then
+            Exit Do
+        End If
+        Index = Index + 1
+    Loop
+    SkipIgnorableLines = Index
 End Function

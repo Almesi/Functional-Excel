@@ -1,0 +1,28 @@
+Number Minimum(Number A, Number B)
+{
+    =LAMBDA(A,B, MIN(A,B))
+}
+
+
+Number Maximum(Number A, Number B)
+{
+    =LAMBDA(A,B, MAX(A,B))
+}
+
+
+Number Clamp(Number Input, Number Minimum, Number Maximum)
+{
+    =LAMBDA(x,Min,Max, MAX(Min,MIN(Max,x)))
+}
+
+
+Number Distance(Number A, Number B)
+{
+    =LAMBDA(A,B, ABS(A-B))
+}
+
+
+Number Midpoint(Number A, Number B)
+{
+    =LAMBDA(A,B, (A+B)/2)
+}

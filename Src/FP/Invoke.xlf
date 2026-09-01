@@ -1,0 +1,4 @@
+Func Invoke(Anything Returnable)
+{
+    =LAMBDA(x,IFERROR(x(),x))
+}

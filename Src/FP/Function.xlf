@@ -1,0 +1,53 @@
+Func Identity()
+{
+    =LAMBDA(
+        X,
+        X
+    )
+}
+
+Func Partial(Func Function, Array_Anything Args)
+{
+    =LAMBDA(Function,A,B,C,D,E,F,G,H,I,
+        SWITCH(
+            TRUE,
+            ISOMITTED(A)                         , Function,
+            ISOMITTED(B), LAMBDA(J               , Function(A,J)),
+            ISOMITTED(C), LAMBDA(J,K             , Function(A,B,J,K)),
+            ISOMITTED(D), LAMBDA(J,K,L           , Function(A,B,C,J,K,L)),
+            ISOMITTED(E), LAMBDA(J,K,L,M         , Function(A,B,C,D,J,K,L,M)),
+            ISOMITTED(F), LAMBDA(J,K,L,M,N       , Function(A,B,C,D,E,J,K,L,M,N)),
+            ISOMITTED(G), LAMBDA(J,K,L,M,N,O     , Function(A,B,C,D,E,F,J,K,L,M,N,O)),
+            ISOMITTED(H), LAMBDA(J,K,L,M,N,O,P   , Function(A,B,C,D,E,F,G,J,K,L,M,N,O,P)),
+            ISOMITTED(I), LAMBDA(J,K,L,M,N,O,P,Q , Function(A,B,C,D,E,F,G,H,J,K,L,M,N,O,P,Q)),
+            Function(A,B,C,D,E,F,G,H,I) 
+        )
+    )
+}
+
+Func Compose(Func F, Func G)
+{
+    =LAMBDA(F,G,
+        LAMBDA(X,
+            F(G(X))
+        )
+    )
+}
+
+Func Pipe(Func F, Func G)
+{
+    =LAMBDA(F,G,
+        LAMBDA(X,
+            G(F(X))
+        )
+    )
+}
+
+Func Flip(Func Function)
+{
+    =LAMBDA(Function,
+        LAMBDA(A,B,
+            Function(B,A)
+        )
+    )
+}

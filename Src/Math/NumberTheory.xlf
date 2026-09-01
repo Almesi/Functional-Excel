@@ -1,0 +1,34 @@
+Number Factorial(Number Input)
+{
+    =LAMBDA(x, FACT(x))
+}
+
+
+Number Fibonacci(Number Input)
+{
+    =LAMBDA(x, FIBONACCI(x))
+}
+
+
+Number GCD(Number A, Number B)
+{
+    =LAMBDA(A,B, GCD(A,B))
+}
+
+
+Number LCM(Number A, Number B)
+{
+    =LAMBDA(A,B, LCM(A,B))
+}
+
+
+Boolean IsEven(Number Input)
+{
+    =LAMBDA(x, IS.EVEN(x))
+}
+
+
+Boolean IsOdd(Number Input)
+{
+    =LAMBDA(x, IS.ODD(x))
+}

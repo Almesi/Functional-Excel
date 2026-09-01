@@ -1,0 +1,46 @@
+Number Square(Number Input)
+{
+    =LAMBDA(x, x^2)
+}
+
+
+Number Cube(Number Input)
+{
+    =LAMBDA(x, x^3)
+}
+
+
+Number Power(Number Base, Number Exponent)
+{
+    =LAMBDA(Base,Exponent, Base^Exponent)
+}
+
+
+Number SquareRoot(Number Input)
+{
+    =LAMBDA(x, SQRT(x))
+}
+
+
+Number Exp(Number Input)
+{
+    =LAMBDA(x, EXP(x))
+}
+
+
+Number Ln(Number Input)
+{
+    =LAMBDA(x, LN(x))
+}
+
+
+Number Log10Log(Number Input)
+{
+    =LAMBDA(x, LOG10(x))
+}
+
+
+Number Log(Number Base, Number Input)
+{
+    =LAMBDA(Base,x, LOG(x,Base))
+}

@@ -1,0 +1,22 @@
+Number Round(Number Input, Number Digits)
+{
+    =LAMBDA(x,n, ROUND(x,n))
+}
+
+
+Number Floor(Number Input, Number Multiple)
+{
+    =LAMBDA(x,n, FLOOR(x,n))
+}
+
+
+Number Ceiling(Number Input, Number Multiple)
+{
+    =LAMBDA(x,n, CEILING(x,n))
+}
+
+
+Number Truncate(Number Input, Number Digits)
+{
+    =LAMBDA(x,n, TRUNC(x,n))
+}

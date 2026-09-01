@@ -4,12 +4,6 @@ Number Mean(Array_Anything Array)
 }
 
 
-Number Median(Array_Anything Array)
-{
-    =LAMBDA(Array, MEDIAN(Array))
-}
-
-
 Number Variance(Array_Anything Array)
 {
     =LAMBDA(Array, VAR.S(Array))
@@ -25,23 +19,6 @@ Number StandardDeviation(Array_Anything Array)
 Number Normalize(Number Input, Number Minimum, Number Maximum)
 {
     =LAMBDA(x,Min,Max, (x-Min)/(Max-Min))
-}
-
-Number Min(Number A, Number B)
-{
-    =LAMBDA(A,B, MIN(A,B))
-}
-
-
-Number Max(Number A, Number B)
-{
-    =LAMBDA(A,B, MAX(A,B))
-}
-
-
-Number Average(Number A, Number B)
-{
-    =LAMBDA(A,B, (A+B)/2)
 }
 
 

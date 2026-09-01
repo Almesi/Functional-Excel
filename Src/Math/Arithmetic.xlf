@@ -22,12 +22,6 @@ Number Divide(Number A, Number B)
 }
 
 
-Number Mod(Number A, Number B)
-{
-    =LAMBDA(A,B, MOD(A,B))
-}
-
-
 Number Double(Number Input)
 {
     =LAMBDA(x, x*2)

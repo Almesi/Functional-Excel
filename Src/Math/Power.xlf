@@ -26,21 +26,3 @@ Number Exp(Number Input)
 {
     =LAMBDA(x, EXP(x))
 }
-
-
-Number Ln(Number Input)
-{
-    =LAMBDA(x, LN(x))
-}
-
-
-Number Log10Log(Number Input)
-{
-    =LAMBDA(x, LOG10(x))
-}
-
-
-Number Log(Number Base, Number Input)
-{
-    =LAMBDA(Base,x, LOG(x,Base))
-}

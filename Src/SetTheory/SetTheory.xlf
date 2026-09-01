@@ -1,0 +1,417 @@
+Number Set_IsEmpty(Set A)
+{
+    =LAMBDA(A, COUNTA(A)=0)
+}
+
+Number Set_Cardinality(Set A)
+{
+    =LAMBDA(A, ROWS(UNIQUE(A)))
+}
+
+Boolean Set_Contains(Set A, Any x)
+{
+    =LAMBDA(A,x, ISNUMBER(XMATCH(x,A)))
+}
+
+Set Set_Unique(Set A)
+{
+    =LAMBDA(A, UNIQUE(A))
+}
+
+Set Set_Union(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        UNIQUE(VSTACK(A,B))
+    )
+}
+
+Set Set_Intersection(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            a, UNIQUE(A),
+            FILTER(a,ISNUMBER(XMATCH(a,B)),"")
+        )
+    )
+}
+
+Set Set_Difference(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            a, UNIQUE(A),
+            FILTER(a,ISNA(XMATCH(a,B)),"")
+        )
+    )
+}
+
+Set Set_SymmetricDifference(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            ab, Difference(A,B),
+            ba, Difference(B,A),
+            UNIQUE(VSTACK(ab,ba))
+        )
+    )
+}
+
+Set Set_Complement(Set A, Set Universe)
+{
+    =LAMBDA(A,Universe,
+        LET(
+            u, UNIQUE(Universe),
+            FILTER(u,ISNA(XMATCH(u,A)),"")
+        )
+    )
+}
+
+Boolean Set_SubSet(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            a, UNIQUE(A),
+            IF(ROWS(a)=0,TRUE,SUM(--ISNA(XMATCH(a,B)))=0)
+        )
+    )
+}
+
+Boolean Set_ProperSub(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        AND(
+            Set_SubSet(A,B),
+            Cardinality(A)<Cardinality(B)
+        )
+    )
+}
+
+Boolean Set_Equal(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        AND(
+            Set_SubSet(A,B),
+            Set_SubSet(B,A)
+        )
+    )
+}
+
+Boolean Set_Disjoint(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            a, UNIQUE(A),
+            IF(ROWS(a)=0,TRUE,SUM(--ISNUMBER(XMATCH(a,B)))=0)
+        )
+    )
+}
+
+Set Set_CartesianProduct(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        LET(
+            a, UNIQUE(A),
+            b, UNIQUE(B),
+            na, ROWS(a),
+            nb, ROWS(b),
+            n, na*nb,
+            k, SEQUENCE(n),
+            HSTACK(
+                INDEX(a,MOD(k-1,na)+1),
+                INDEX(b,INT((k-1)/na)+1)
+            )
+        )
+    )
+}
+
+Set Set_PowerSet(Set A)
+{
+    =LAMBDA(A,
+        LET(
+            a, UNIQUE(A),
+            n, ROWS(a),
+            masks, SEQUENCE(2^n,,0),
+            MAKEARRAY(
+                ROWS(masks),
+                n,
+                LAMBDA(r,c,
+                    --AND(
+                        MID(
+                            DEC2BIN(INDEX(masks,r),n),
+                            c,
+                            1
+                        )="1"
+                    )
+                )
+            )
+        )
+    )
+}
+
+Set Set_Add(Set A, Any x)
+{
+    =LAMBDA(A,x,
+        UNIQUE(VSTACK(A,x))
+    )
+}
+
+Set Set_Remove(Set A, Any x)
+{
+    =LAMBDA(A,x,
+        FILTER(A,A<>x,"")
+    )
+}
+
+Set Set_Filter(Set A, Func Predicate)
+{
+    =LAMBDA(A,Predicate,
+        FILTER(A,MAP(A,Predicate))
+    )
+}
+
+Set Set_Map(Set A, Func Function)
+{
+    =LAMBDA(A,Function,
+        MAP(A,Function)
+    )
+}
+
+Any Set_Reduce(Set A, Func Function, Any Initial)
+{
+    =LAMBDA(A,Function,Initial,
+        REDUCE(Initial,A,Function)
+    )
+}
+
+Boolean Set_ForAll(Set A, Func Predicate)
+{
+    =LAMBDA(A,Predicate,
+        AND(MAP(A,Predicate))
+    )
+}
+
+Boolean Set_Exists(Set A, Func Predicate)
+{
+    =LAMBDA(A,Predicate,
+        OR(MAP(A,Predicate))
+    )
+}
+
+Boolean Set_ExistsUnique(Set A, Func Predicate)
+{
+    =LAMBDA(A,Predicate,
+        SUM(--MAP(A,Predicate))=1
+    )
+}
+
+Boolean Set_EmptyIntersection(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        Disjoint(A,B)
+    )
+}
+
+Set Set_SetOf(Set A, Func Predicate)
+{
+    =LAMBDA(A,Predicate,
+        FILTER(A,MAP(A,Predicate),"")
+    )
+}
+
+Set Set_Domain(Relation R)
+{
+    =LAMBDA(R,
+        UNIQUE(CHOOSECOLS(R,1))
+    )
+}
+
+Set Set_Range(Relation R)
+{
+    =LAMBDA(R,
+        UNIQUE(CHOOSECOLS(R,2))
+    )
+}
+
+Boolean Set_InRelation(Relation R, Any x, Any y)
+{
+    =LAMBDA(R,x,y,
+        COUNTIFS(
+            CHOOSECOLS(R,1),x,
+            CHOOSECOLS(R,2),y
+        )>0
+    )
+}
+
+Relation Set_Inverse(Relation R)
+{
+    =LAMBDA(R,
+        CHOOSECOLS(R,2,1)
+    )
+}
+
+Boolean Set_Reflexive(Set A, Relation R)
+{
+    =LAMBDA(A,R,
+        ForAll(A,LAMBDA(x,InRelation(R,x,x)))
+    )
+}
+
+Boolean Set_Symmetric(Relation R)
+{
+    =LAMBDA(R,
+        LET(
+            r, UNIQUE(R),
+            AND(
+                MAP(
+                    SEQUENCE(ROWS(r)),
+                    LAMBDA(i,
+                        InRelation(
+                            R,
+                            INDEX(r,i,1),
+                            INDEX(r,i,2)
+                        )=
+                        InRelation(
+                            R,
+                            INDEX(r,i,2),
+                            INDEX(r,i,1)
+                        )
+                    )
+                )
+            )
+        )
+    )
+}
+
+Boolean Set_Transitive(Relation R)
+{
+    =LAMBDA(R,
+        LET(
+            pairs, UNIQUE(R),
+            AND(
+                MAP(
+                    SEQUENCE(ROWS(pairs)),
+                    LAMBDA(i,
+                        LET(
+                            x,INDEX(pairs,i,1),
+                            y,INDEX(pairs,i,2),
+                            z,IFERROR(
+                                FILTER(
+                                    CHOOSECOLS(pairs,2),
+                                    CHOOSECOLS(pairs,1)=y
+                                ),
+                                ""
+                            ),
+                            AND(
+                                MAP(
+                                    z,
+                                    LAMBDA(w,
+                                        NOT(InRelation(R,x,y))+
+                                        InRelation(R,x,w)>0
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+}
+
+Number Set_Count(Set A)
+{
+    =LAMBDA(A,
+        COUNTA(A)
+    )
+}
+
+Boolean Set_AnyMember(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        OR(MAP(A,LAMBDA(x,Contains(B,x))))
+    )
+}
+
+Boolean Set_AllMembers(Set A, Set B)
+{
+    =LAMBDA(A,B,
+        AND(MAP(A,LAMBDA(x,Contains(B,x))))
+    )
+}
+
+Set Set_IntersectionMany(Set Sets)
+{
+    =LAMBDA(Sets,
+        DROP(
+            REDUCE(
+                "",
+                Sets,
+                LAMBDA(acc,A,
+                    IF(acc="",UNIQUE(A),Intersection(acc,A))
+                )
+            ),
+            0
+        )
+    )
+}
+
+Set Set_UnionMany(Set Sets)
+{
+    =LAMBDA(Sets,
+        UNIQUE(
+            DROP(
+                REDUCE(
+                    "",
+                    Sets,
+                    LAMBDA(acc,A,
+                        IF(acc="",A,VSTACK(acc,A))
+                    )
+                ),
+                0
+            )
+        )
+    )
+}
+
+Set Set_DifferenceMany(Set A, Set Sets)
+{
+    =LAMBDA(A,Sets,
+        REDUCE(
+            A,
+            Sets,
+            LAMBDA(acc,B,Difference(acc,B))
+        )
+    )
+}
+
+Boolean Set_Partition(Set Universe, Set A, Set B)
+{
+    =LAMBDA(Universe,A,B,
+        AND(
+            Equal(Union(A,B),Universe),
+            Disjoint(A,B)
+        )
+    )
+}
+
+Set Set_Quotient(Set A, Func Equivalence)
+{
+    =LAMBDA(A,Equivalence,
+        LET(
+            elements,UNIQUE(A),
+            REDUCE(
+                "",
+                elements,
+                LAMBDA(classes,x,
+                    LET(
+                        remaining,
+                        IF(classes="",elements,Difference(elements,TOCOL(classes))),
+                        class,
+                        FILTER(remaining,MAP(remaining,LAMBDA(y,Equivalence(x,y))),""),
+                        VSTACK(classes,class)
+                    )
+                )
+            )
+        )
+    )
+}

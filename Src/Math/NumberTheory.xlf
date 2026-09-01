@@ -20,15 +20,3 @@ Number LCM(Number A, Number B)
 {
     =LAMBDA(A,B, LCM(A,B))
 }
-
-
-Boolean IsEven(Number Input)
-{
-    =LAMBDA(x, IS.EVEN(x))
-}
-
-
-Boolean IsOdd(Number Input)
-{
-    =LAMBDA(x, IS.ODD(x))
-}
